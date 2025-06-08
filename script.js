@@ -7,26 +7,21 @@ let currentSortField = null;
 let currentSortDirection = 'asc';
 
 // Инициализация приложения
-document.addEventListener('DOMContentLoaded', function() {
-    initializeApp();
+document.addEventListener('DOMContentLoaded', async function() {
+    await initializeApp();
     setupEventListeners();
     renderCurrentTab();
     updateStats();
 });
 
 // Инициализация приложения
-function initializeApp() {
-    // Проверяем поддержку localStorage
-    if (!window.localStorage) {
-        NotificationManager.error('Ваш браузер не поддерживает localStorage. Данные не будут сохраняться.');
-    }
-    
-    // Инициализируем базу данных
+async function initializeApp() {
     if (!db) {
         NotificationManager.error('Ошибка инициализации базы данных');
         return;
     }
-    
+
+    await db.init();
     console.log('Приложение инициализировано');
 }
 
@@ -1134,12 +1129,7 @@ function restoreFromBackup(file) {
 function clearAllData() {
     if (confirm('Вы уверены, что хотите удалить ВСЕ данные? Это действие необратимо!')) {
         if (confirm('Последнее предупреждение! Все данные будут удалены безвозвратно!')) {
-            try {
-                localStorage.removeItem(db.storageKey);
-                location.reload();
-            } catch (error) {
-                NotificationManager.error('Ошибка при очистке данных: ' + error.message);
-            }
+            location.reload();
         }
     }
 }
