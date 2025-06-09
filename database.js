@@ -104,8 +104,11 @@ class Database {
             excelData.forEach((row, idx) => {
                 if (idx < 3) return;
                 if (row[0]) {
+
+                    const item = {
                     imported.push({
                         id: row[0],
+
                         inventoryNumber: row[1] || '',
                         location: row[2] || '',
                         deviceType: row[3] || '',
@@ -123,7 +126,12 @@ class Database {
                         computerName: '',
                         ipAddress: '',
                         notes: ''
+
+                    };
+                    const added = this.add('computers', item);
+                    if (added) imported.push(added);
                     });
+
                 }
             });
             this.updateByType('importedComputers', imported);
