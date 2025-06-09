@@ -210,8 +210,9 @@ class FormManager {
         const inputs = form.querySelectorAll('input, select, textarea');
         inputs.forEach(input => {
             if (input.id) {
-                const key = input.id.replace(/^(computer|network|other|assigned)/, '').toLowerCase();
-                if (key) {
+                const keyPart = input.id.replace(/^(computer|network|other|assigned)/, '');
+                if (keyPart) {
+                    const key = keyPart.charAt(0).toLowerCase() + keyPart.slice(1);
                     data[key] = input.value;
                 }
             }
